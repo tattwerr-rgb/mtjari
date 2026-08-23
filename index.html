@@ -4882,28 +4882,44 @@ function copyStoreLink() {
 }
   
   
-// ===== فتح المتجر من الرابط =====
+// ============================================================
+// الكود النهائي - يفتح المتجر أو المنتج حسب الرابط
+// ============================================================
+
 (function() {
     const urlParams = new URLSearchParams(window.location.search);
     const storeId = urlParams.get('store');
+    const productId = urlParams.get('product');
     
-    if (storeId) {
-        console.log('🔗 فتح المتجر من الرابط:', storeId);
-        
-        // ننتظر حتى تحميل الصفحة بالكامل
-        if (document.readyState === 'complete') {
-            // الصفحة محملة بالفعل
+    // الحالة الأولى: يوجد منتج → نفتح المنتج
+    if (storeId && productId) {
+        console.log('🔗 فتح المنتج من الرابط:', productId);
+        window.addEventListener('load', function() {
             setTimeout(function() {
-                openHomeStore(storeId);
-            }, 300);
-        } else {
-            // ننتظر حتى تكتمل التحميل
-            window.addEventListener('load', function() {
-                setTimeout(function() {
+                // نفتح المتجر أولاً
+                if (typeof openHomeStore === 'function') {
                     openHomeStore(storeId);
+                }
+                // ثم نفتح المنتج
+                setTimeout(function() {
+                    if (typeof openProductDetail === 'function') {
+                        openProductDetail(productId);
+                    }
                 }, 300);
-            });
-        }
+            }, 300);
+        });
+    }
+    
+    // الحالة الثانية: يوجد متجر فقط → نفتح المتجر
+    else if (storeId) {
+        console.log('🔗 فتح المتجر من الرابط:', storeId);
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (typeof openHomeStore === 'function') {
+                    openHomeStore(storeId);
+                }
+            }, 300);
+        });
     }
 })();
 </script>
