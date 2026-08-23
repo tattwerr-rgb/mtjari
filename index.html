@@ -4886,15 +4886,24 @@ function copyStoreLink() {
 (function() {
     const urlParams = new URLSearchParams(window.location.search);
     const storeId = urlParams.get('store');
+    
     if (storeId) {
         console.log('🔗 فتح المتجر من الرابط:', storeId);
-        setTimeout(function() {
-            if (typeof openHomeStore === 'function') {
+        
+        // ننتظر حتى تحميل الصفحة بالكامل
+        if (document.readyState === 'complete') {
+            // الصفحة محملة بالفعل
+            setTimeout(function() {
                 openHomeStore(storeId);
-            } else {
-                console.warn('⚠️ openHomeStore غير موجودة');
-            }
-        }, 500);
+            }, 300);
+        } else {
+            // ننتظر حتى تكتمل التحميل
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    openHomeStore(storeId);
+                }, 300);
+            });
+        }
     }
 })();
 </script>
