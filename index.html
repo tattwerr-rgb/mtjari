@@ -4852,28 +4852,35 @@ function shareProduct(platform) {
     showToast('✅ تم فتح المشاركة على ' + platform, 'success');
 }
   
-  
-  
- function copyStoreLink() {
+// ============================================================
+// حل بسيط ومباشر - ضعه في نهاية الـ script
+// ============================================================
+
+// 1. دالة نسخ الرابط
+function copyStoreLink() {
     const storeId = currentStoreId || globalStoreId || currentUser?.store_id;
     if (!storeId) {
-        showToast('⚠️ لا يوجد متجر', 'warning');
+        alert('⚠️ لا يوجد متجر');
         return;
     }
     const url = 'https://singular-conkies-c4dece.netlify.app/?store=' + storeId;
     navigator.clipboard.writeText(url).then(() => {
-        showToast('✅ تم نسخ رابط المتجر!', 'success');
+        alert('✅ تم نسخ الرابط: ' + url);
     });
 }
-  (function() {
+
+// 2. فتح المتجر من الرابط
+(function() {
     const storeId = new URLSearchParams(window.location.search).get('store');
     if (storeId) {
-        setTimeout(() => {
-            if (typeof openHomeStore === 'function') openHomeStore(storeId);
+        // ننتظر 1 ثانية ثم نفتح المتجر
+        setTimeout(function() {
+            if (typeof openHomeStore === 'function') {
+                openHomeStore(storeId);
+            }
         }, 1000);
     }
 })();
-  
 </script>
 
 
