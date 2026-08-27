@@ -1353,32 +1353,11 @@ body {
     <div id="allStoresContainer" style="display:none;"><div class="stores-list-container" id="storesListContainer"></div><button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreStores()" style="display:none;">📥 تحميل المزيد</button></div>
     <div class="stores-grid" id="storesGridContainer"></div>
 </div>
-<div class="store-page-wrapper" id="storePageWrapper">
-    <div class="banner-store" id="bannerStore">
-        <img class="banner-img" id="bannerImage" src="" alt="بانر المتجر">
-        <div class="banner-placeholder" id="bannerPlaceholder">
-            <div><span class="icon">🖼️</span><span>لا يوجد بانر</span></div>
-        </div>
-        <div class="banner-store-name" id="bannerStoreName"></div>
-    </div>
-    <div style="text-align:center; padding:10px 0;">
-        <button onclick="copyStoreLink()" style="background:#25D366;color:white;border:none;padding:10px 28px;border-radius:30px;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 15px rgba(37,211,102,0.3);">🔗 انسخ رابط المتجر</button>
-    </div>
-    <div id="products-section" class="app-section">
-        <div class="products-grid" id="productsContainer">
-            <div class="empty-state">
-                <div class="icon">⏳</div>
-                <p>جاري تحميل المنتجات...</p>
-            </div>
-        </div>
-    </div>
-    <div id="stats-section" class="app-section" style="display:none;padding:0;">
-        <button class="back-to-products-btn" onclick="closeStats()"><span class="icon">⬅️</span> العودة إلى المنتجات</button>
-        <h3 style="color:#2c3e50;margin-bottom:5px;">📈 أداء مبيعاتك ونقرات المشتركين</h3>
-        <p style="font-size:12px;color:#7f8c8d;margin-bottom:15px;">هنا تظهر المنتجات الأكثر طلباً وضغطاً من قبل الزبائن بالتفصيل الحي.</p>
-        <div id="stats-container" style="display:flex;flex-direction:column;gap:12px;"></div>
-    </div>
-</div>
+<div class="store-page-wrapper" id="storePageWrapper"><div class="banner-store" id="bannerStore"><img class="banner-img" id="bannerImage" src="" alt="بانر المتجر"><div class="banner-placeholder" id="bannerPlaceholder"><div><span class="icon">🖼️</span><span>لا يوجد بانر</span></div></div><div class="banner-store-name" id="bannerStoreName"></div></div>
+    <!-- زر وظائف شاغرة داخل المتجر (يظهر فقط عند وجود وظائف) -->
+    <button class="jobs-toggle-btn" id="jobsToggleBtn" onclick="toggleJobsSection()" style="display:none;">وظائف شاغرة</button>
+    <div id="jobsSection" style="display:none;" class="jobs-section"><div id="jobsContainer" class="jobs-grid"><div class="job-empty"><span class="icon">⏳</span><p>جاري تحميل الوظائف...</p></div></div></div>
+    <div id="products-section" class="app-section"><div class="products-grid" id="productsContainer"><div class="empty-state"><div class="icon">⏳</div><p>جاري تحميل المنتجات...</p></div></div></div><div id="stats-section" class="app-section" style="display:none;padding:0;"><button class="back-to-products-btn" onclick="closeStats()"><span class="icon">⬅️</span> العودة إلى المنتجات</button><h3 style="color:#2c3e50;margin-bottom:5px;">📈 أداء مبيعاتك ونقرات المشتركين</h3><p style="font-size:12px;color:#7f8c8d;margin-bottom:15px;">هنا تظهر المنتجات الأكثر طلباً وضغطاً من قبل الزبائن بالتفصيل الحي.</p><div id="stats-container" style="display:flex;flex-direction:column;gap:12px;"></div></div></div>
 <div class="modal-overlay manage-modal" id="manageProductsPage" style="display:none;z-index:9999;"><div class="modal-box"><div class="modal-header" style="position:relative;">
     <button onclick="closeManageProductsPage()" style="position:absolute; top:5px; left:5px; background:transparent; border:none; font-size:22px; color:#a0aec0; cursor:pointer; padding:4px 8px; z-index:10;" title="إغلاق">✕</button>
     <h2 style="text-align:center; width:100%;">📦 إدارة المنتجات</h2>
@@ -4851,36 +4830,6 @@ function shareProduct(platform) {
     window.open(shareUrl, '_blank', 'width=600,height=500');
     showToast('✅ تم فتح المشاركة على ' + platform, 'success');
 }
-  
-// ============================================================
-// حل بسيط ومباشر - ضعه في نهاية الـ script
-// ============================================================
-
-// 1. دالة نسخ الرابط
-function copyStoreLink() {
-    const storeId = currentStoreId || globalStoreId || currentUser?.store_id;
-    if (!storeId) {
-        alert('⚠️ لا يوجد متجر');
-        return;
-    }
-    const url = 'https://singular-conkies-c4dece.netlify.app/?store=' + storeId;
-    navigator.clipboard.writeText(url).then(() => {
-        alert('✅ تم نسخ الرابط: ' + url);
-    });
-}
-
-// 2. فتح المتجر من الرابط
-(function() {
-    const storeId = new URLSearchParams(window.location.search).get('store');
-    if (storeId) {
-        // ننتظر 1 ثانية ثم نفتح المتجر
-        setTimeout(function() {
-            if (typeof openHomeStore === 'function') {
-                openHomeStore(storeId);
-            }
-        }, 1000);
-    }
-})();
 </script>
 
 
